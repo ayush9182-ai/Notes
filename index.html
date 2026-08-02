@@ -179,7 +179,7 @@
                     <span class="icon">📁</span>
                     <h3>Physics</h3>
                 </div>
-                <div class="glass card" onclick="openSubject('pe', '🏃 Physical Education')">
+                <div class="glass card" onclick="openSubject('physical_education', '🏃 Physical Education')">
                     <span class="icon">📁</span>
                     <h3>Physical Education</h3>
                 </div>
@@ -294,7 +294,7 @@
                 "Ch 13: Chapter 13": "",
                 "Ch 14: Chapter 14": ""
             },
-            physical education: {
+            physical_education: {
                 "Ch 01: Chapter 01": "https://drive.google.com/file/d/1xp7fGMtyCviAi4KJ2KhkyglQT6dJ3rB2/view?usp=drivesdk",
                 "Ch 02: Chapter 02": "",
                 "Ch 03: Chapter 03": "",
@@ -309,7 +309,7 @@
                 "Ch 12: Chapter 12": "",
                 "Ch 13: Chapter 13": "",
                 "Ch 14: Chapter 14": ""
-           }
+            }
         };
 
         let activeSubject = null;
@@ -343,6 +343,11 @@
             container.innerHTML = '';
             const searchVal = document.getElementById('search').value.toLowerCase();
             const chapters = notes[activeSubject];
+
+            if (!chapters) {
+                container.innerHTML = '<p style="color: #ff6384;">Subject not found!</p>';
+                return;
+            }
 
             for (let name in chapters) {
                 if (searchVal && !name.toLowerCase().includes(searchVal)) continue;
