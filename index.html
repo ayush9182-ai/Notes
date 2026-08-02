@@ -3,654 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Study Notes</title>
+    <title>📚 Simple Study Notes</title>
     <style>
-        /* =========================================
-           FONT & BASE STYLES
-           ========================================= */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-        :root {
-            --text-main: #ffffff;
-            --text-muted: #a0aec0;
-            --glass-bg: rgba(255, 255, 255, 0.07);
-            --glass-bg-hover: rgba(255, 255, 255, 0.12);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --accent: #4fd1c5;
-            --accent-hover: #38b2ac;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
+        /* Base & Dark Glassmorphism Styling */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
         body {
-            /* Dark Blue Premium Gradient */
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background: linear-gradient(135deg, #0a1128, #1c2541, #0b132b);
             background-attachment: fixed;
-            color: var(--text-main);
+            color: #ffffff;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-
-        /* =========================================
-           GLASSMORPHISM UTILITIES
-           ========================================= */
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .glass-card {
-            border-radius: 16px;
-            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            background: var(--glass-bg-hover);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
-        }
-
-        /* =========================================
-           LAYOUT & COMPONENTS
-           ========================================= */
-        /* Header */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
             padding: 20px;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
             text-align: center;
-            border-bottom: 1px solid var(--glass-border);
-            border-radius: 0 0 20px 20px;
-        }
-
-        header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        header p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        main {
-            flex: 1;
-            padding: 40px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        /* Views (SPA) */
-        #home-view, #subject-view {
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-
-        .hidden {
-            display: none !important;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Grid for Home Subjects */
-        .subjects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .subject-card {
-            cursor: pointer;
-            padding: 40px 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .folder-icon {
-            font-size: 4rem;
-            display: inline-block;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        /* Staggered animation delays for folder icons */
-        .subject-card:nth-child(even) .folder-icon {
-            animation-delay: 1s;
-        }
-        .subject-card:nth-child(3n) .folder-icon {
-            animation-delay: 2s;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .subject-card h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        /* Subject View Specifics */
-        .subject-header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
+            padding: 20px;
             margin-bottom: 30px;
-            gap: 15px;
         }
 
-        .btn-back {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-main);
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        header h1 { color: #00f2fe; font-size: 1.8rem; margin-bottom: 5px; }
+        header p { color: #a0aec0; font-size: 0.9rem; }
 
-        .btn-back:hover {
-            background: var(--glass-bg-hover);
-            transform: translateX(-5px);
-        }
+        .container { max-width: 1000px; margin: 0 auto; }
 
-        #current-subject-title {
-            font-size: 2rem;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
+        /* SPA View Controls */
+        .view { display: none; }
+        .view.active { display: block; }
 
-        .search-container {
-            width: 100%;
-            max-width: 400px;
-            position: relative;
-        }
-
-        .search-container input {
-            width: 100%;
-            padding: 12px 20px 12px 40px;
-            border-radius: 50px;
-            border: 1px solid var(--glass-border);
-            background: rgba(0, 0, 0, 0.2);
-            color: var(--text-main);
-            font-size: 1rem;
-            outline: none;
-            transition: background 0.3s, border-color 0.3s;
-        }
-
-        .search-container input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .search-container input:focus {
-            background: rgba(0, 0, 0, 0.4);
-            border-color: var(--accent);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.1rem;
-        }
-
-        /* Chapters Layout */
-        .chapters-list {
+        /* Subject Cards Grid */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
 
-        .chapter-card {
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .chapter-card h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 10px;
-        }
-
-        .chapter-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: auto;
-        }
-
-        .btn-action {
-            flex: 1;
+        .card {
+            padding: 30px;
             text-align: center;
-            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .card .icon { font-size: 3rem; margin-bottom: 10px; display: block; }
+        .card h3 { font-size: 1.3rem; }
+
+        /* Subject View & Header */
+        .sub-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-back {
+            background: #00f2fe;
+            color: #000;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-back:hover { opacity: 0.8; transform: scale(1.05); }
+
+        .search-box {
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            outline: none;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Chapter Action Buttons */
+        .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .btn-act {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
             border-radius: 8px;
             text-decoration: none;
-            color: var(--text-main);
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-        }
-
-        .btn-action:hover {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(79, 209, 197, 0.4);
-        }
-
-        .btn-preview {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fff;
             background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: 0.2s;
         }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--text-muted);
-            grid-column: 1 / -1;
-        }
-
-        .empty-state h4 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: var(--text-main);
-        }
-
-        /* Floating Action Button (FAB) */
-        #fab {
-            position: fixed;
-            bottom: 80px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--accent);
+        .btn-act.active:hover {
+            background: #00f2fe;
             color: #000;
-            font-size: 1.5rem;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(79, 209, 197, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
         }
 
-        #fab.show {
-            opacity: 1;
-            visibility: visible;
+        .btn-act.disabled {
+            opacity: 0.3;
+            pointer-events: none;
         }
 
-        #fab:hover {
-            transform: scale(1.1);
-            background: var(--accent-hover);
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            float: right;
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: auto;
-            border-top: 1px solid var(--glass-border);
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
+        .available { background: rgba(0, 245, 212, 0.2); color: #00f5d4; }
+        .empty { background: rgba(255, 99, 132, 0.2); color: #ff6384; }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            header h1 { font-size: 1.5rem; }
-            .subject-header { flex-direction: column; align-items: flex-start; }
-            .search-container { max-width: 100%; }
-            .chapter-actions { flex-direction: column; }
-            #fab { bottom: 90px; right: 20px; }
+        /* Modal Preview */
+        .modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            display: none; align-items: center; justify-content: center; padding: 20px; z-index: 100;
         }
+        .modal.active { display: flex; }
+        .modal-content { width: 100%; max-width: 800px; height: 80vh; display: flex; flex-direction: column; }
+        .modal-header { padding: 10px 15px; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .close-btn { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header class="glass">
+    <header class="glass container">
         <h1>📚 Study Notes</h1>
-        <p>Organized study notes for quick access from anywhere.</p>
+        <p>Simple & Quick Access Notes</p>
     </header>
 
-    <!-- Main Content Area -->
-    <main>
+    <div class="container">
         
-        <!-- View 1: Home (Subject Grid) -->
-        <div id="home-view" class="fade-in">
-            <div class="subjects-grid">
-                <!-- Subject Cards -->
-                <div class="glass glass-card subject-card" onclick="openSubject('hindi', 'Hindi')">
-                    <span class="folder-icon">📁</span>
-                    <h2>Hindi</h2>
+        <!-- HOME VIEW (Folders) -->
+        <div id="home-view" class="view active">
+            <div class="grid">
+                <div class="glass card" onclick="openSubject('hindi', '📙 Hindi')">
+                    <span class="icon">📁</span>
+                    <h3>Hindi</h3>
                 </div>
-                <div class="glass glass-card subject-card" onclick="openSubject('english', 'English')">
-                    <span class="folder-icon">📁</span>
-                    <h2>English</h2>
+                <div class="glass card" onclick="openSubject('english', '📘 English')">
+                    <span class="icon">📁</span>
+                    <h3>English</h3>
                 </div>
-                <div class="glass glass-card subject-card" onclick="openSubject('chemistry', 'Chemistry')">
-                    <span class="folder-icon">📁</span>
-                    <h2>Chemistry</h2>
+                <div class="glass card" onclick="openSubject('chemistry', '🧪 Chemistry')">
+                    <span class="icon">📁</span>
+                    <h3>Chemistry</h3>
                 </div>
-                <div class="glass glass-card subject-card" onclick="openSubject('biology', 'Biology')">
-                    <span class="folder-icon">📁</span>
-                    <h2>Biology</h2>
+                <div class="glass card" onclick="openSubject('biology', '🧬 Biology')">
+                    <span class="icon">📁</span>
+                    <h3>Biology</h3>
                 </div>
-                <div class="glass glass-card subject-card" onclick="openSubject('pe', 'Physical Education')">
-                    <span class="folder-icon">📁</span>
-                    <h2>Physical Education</h2>
+                <div class="glass card" onclick="openSubject('physics', '⚡ Physics')">
+                    <span class="icon">📁</span>
+                    <h3>Physics</h3>
                 </div>
-                <div class="glass glass-card subject-card" onclick="openSubject('physics', 'Physics')">
-                    <span class="folder-icon">📁</span>
-                    <h2>Physics</h2>
+                <div class="glass card" onclick="openSubject('pe', '🏃 Physical Education')">
+                    <span class="icon">📁</span>
+                    <h3>Physical Education</h3>
                 </div>
             </div>
         </div>
 
-        <!-- View 2: Subject Details & Chapters -->
-        <div id="subject-view" class="hidden fade-in">
-            
-            <!-- Subject Header (Back Btn + Title + Search) -->
-            <div class="subject-header">
-                <button class="btn-back" onclick="goHome()">
-                    <span>⬅️</span> Back to Home
-                </button>
-                <h2 id="current-subject-title">Subject Name</h2>
-                <div class="search-container">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="searchInput" placeholder="Search chapters..." onkeyup="filterChapters()">
-                </div>
+        <!-- SUBJECT VIEW (Chapters) -->
+        <div id="subject-view" class="view">
+            <div class="sub-header">
+                <button class="btn-back" onclick="goHome()">⬅ Back</button>
+                <h2 id="subject-title">Subject</h2>
+                <input type="text" id="search" class="search-box" placeholder="Search Chapter..." oninput="filterChapters()">
             </div>
-
-            <!-- Subject Folders (Only one is visible at a time) -->
-            <!-- 
-                 INSTRUCTIONS FOR ADDING CHAPTERS:
-                 1. Find the subject div below (e.g., id="subject-physics").
-                 2. Copy the "ADD CHAPTER TEMPLATE" block found inside the comments.
-                 3. Paste it just below the empty-state div.
-                 4. Replace "Chapter Name Here" with the actual name.
-                 5. Replace "FILE_ID" with your actual Google Drive File ID.
-            -->
-
-            <!-- 1. HINDI FOLDER -->
-            <div id="subject-hindi" class="chapters-list subject-folder hidden">
-                <div class="glass glass-card empty-state">
-                    <h4>📭 No chapters yet</h4>
-                    <p>Check the HTML source code to add chapters using the template.</p>
-                </div>
-                <!-- ========================================== -->
-                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
-                <!-- ========================================== -->
-                <!--
-                <div class="glass glass-card chapter-card">
-                    <h3 class="chapter-name">Chapter Name Here</h3>
-                    <div class="chapter-actions">
-                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
-                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
-                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
-                    </div>
-                </div>
-                -->
-                <!-- ========================================== -->
-            </div>
-
-            <!-- 2. ENGLISH FOLDER -->
-            <div id="subject-english" class="chapters-list subject-folder hidden">
-                <div class="glass glass-card empty-state">
-                    <h4>📭 No chapters yet</h4>
-                    <p>Check the HTML source code to add chapters using the template.</p>
-                </div>
-                <!-- ========================================== -->
-                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
-                <!-- ========================================== -->
-                <!--
-                <div class="glass glass-card chapter-card">
-                    <h3 class="chapter-name">Chapter Name Here</h3>
-                    <div class="chapter-actions">
-                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
-                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
-                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
-                    </div>
-                </div>
-                -->
-                <!-- ========================================== -->
-            </div>
-
-            <!-- 3. CHEMISTRY FOLDER -->
-            <div id="subject-chemistry" class="chapters-list subject-folder hidden">
-                <div class="glass glass-card empty-state">
-                    <h4>📭 No chapters yet</h4>
-                    <p>Check the HTML source code to add chapters using the template.</p>
-                </div>
-                <!-- ========================================== -->
-                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
-                <!-- ========================================== -->
-                <!--
-                <div class="glass glass-card chapter-card">
-                    <h3 class="chapter-name">Chapter Name Here</h3>
-                    <div class="chapter-actions">
-                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
-                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
-                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
-                    </div>
-                </div>
-                -->
-                <!-- ========================================== -->
-            </div>
-
-            <!-- 4. BIOLOGY FOLDER -->
-            <div id="subject-biology" class="chapters-list subject-folder hidden">
-                <div class="glass glass-card empty-state">
-                    <h4>📭 No chapters yet</h4>
-                    <p>Check the HTML source code to add chapters using the template.</p>
-                </div>
-                <!-- ========================================== -->
-                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
-                <!-- ========================================== -->
-                <!--
-                <div class="glass glass-card chapter-card">
-                    <h3 class="chapter-name">Chapter Name Here</h3>
-                    <div class="chapter-actions">
-                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
-                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
-                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
-                    </div>
-                </div>
-                -->
-                <!-- ========================================== -->
-            </div>
-
-            <!-- 5. PHYSICAL EDUCATION FOLDER -->
-            <div id="subject-pe" class="chapters-list subject-folder hidden">
-                <div class="glass glass-card empty-state">
-                    <h4>📭 No chapters yet</h4>
-                    <p>Check the HTML source code to add chapters using the template.</p>
-                </div>
-                <!-- ========================================== -->
-                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
-                <!-- ========================================== -->
-                <!--
-                <div class="glass glass-card chapter-card">
-                    <h3 class="chapter-name">Chapter Name Here</h3>
-                    <div class="chapter-actions">
-                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
-                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
-                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
-                    </div>
-                </div>
-                -->
-                <!-- ========================================== -->
-            </div>
-
-            <!-- 6. PHYSICS FOLDER -->
-            <div id="subject-physics" class="chapters-list subject-folder hidden">
-                <div class="glass glass-card empty-state">
-                    <h4>📭 No chapters yet</h4>
-                    <p>Check the HTML source code to add chapters using the template.</p>
-                </div>
-                <!-- ========================================== -->
-                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
-                <!-- ========================================== -->
-                <!--
-                <div class="glass glass-card chapter-card">
-                    <h3 class="chapter-name">Chapter Name Here</h3>
-                    <div class="chapter-actions">
-                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
-                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
-                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
-                    </div>
-                </div>
-                -->
-                <!-- ========================================== -->
-            </div>
-
+            <div id="chapters-list" class="grid"></div>
         </div>
-    </main>
 
-    <!-- Floating Action Button (Scroll to top) -->
-    <button id="fab" onclick="scrollToTop()" title="Go to top">⬆️</button>
+    </div>
 
-    <!-- Footer -->
-    <footer class="glass">
-        Made with ❤️ by Ayush | Hosted on GitHub Pages
-    </footer>
+    <!-- PDF Preview Modal -->
+    <div id="modal" class="modal">
+        <div class="glass modal-content">
+            <div class="modal-header">
+                <span id="modal-title">Preview</span>
+                <button class="close-btn" onclick="closeModal()">✕</button>
+            </div>
+            <iframe id="pdf-frame" style="width:100%; height:100%; border:none;"></iframe>
+        </div>
+    </div>
 
-    <!-- JavaScript for SPA Logic & Functionality -->
     <script>
-        // Global variable to keep track of current active subject
-        let activeSubjectId = null;
-
-        // Function to open a specific subject page
-        function openSubject(subjectId, subjectName) {
-            // Update Title
-            document.getElementById('current-subject-title').innerText = subjectName;
-            
-            // Clear search bar
-            document.getElementById('searchInput').value = '';
-
-            // Hide Home View
-            document.getElementById('home-view').classList.add('hidden');
-            
-            // Hide all subject folders
-            const allFolders = document.querySelectorAll('.subject-folder');
-            allFolders.forEach(folder => {
-                folder.classList.add('hidden');
-                // Reset all chapter card visibilities in case they were filtered
-                const chapters = folder.querySelectorAll('.chapter-card');
-                chapters.forEach(card => card.style.display = 'flex');
-            });
-
-            // Show selected subject folder
-            const activeFolder = document.getElementById('subject-' + subjectId);
-            activeFolder.classList.remove('hidden');
-            activeSubjectId = subjectId;
-
-            // Show Subject View container
-            const subjectView = document.getElementById('subject-view');
-            subjectView.classList.remove('hidden');
-            
-            // Scroll to top automatically on page transition
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Function to go back to the home page
-        function goHome() {
-            // Hide Subject View
-            document.getElementById('subject-view').classList.add('hidden');
-            
-            // Show Home View
-            document.getElementById('home-view').classList.remove('hidden');
-            
-            activeSubjectId = null;
-            
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Function to filter chapters by search input
-        function filterChapters() {
-            if (!activeSubjectId) return;
-
-            let input = document.getElementById('searchInput');
-            let filter = input.value.toLowerCase();
-            let activeFolder = document.getElementById('subject-' + activeSubjectId);
-            let chapters = activeFolder.querySelectorAll('.chapter-card');
-            
-            // Filter logic
-            chapters.forEach(chapter => {
-                let chapterName = chapter.querySelector('.chapter-name').innerText.toLowerCase();
-                if (chapterName.includes(filter)) {
-                    chapter.style.display = "flex";
-                } else {
-                    chapter.style.display = "none";
-                }
-            });
-        }
-
-        // Floating Action Button Visibility Logic
-        window.onscroll = function() {
-            const fab = document.getElementById("fab");
-            // Show button after scrolling down 200px
-            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-                fab.classList.add("show");
-            } else {
-                fab.classList.remove("show");
-            }
+        /* =========================================================
+           PASTE YOUR GOOGLE DRIVE LINKS HERE (Simple Ch 01 & Ch 02)
+           ========================================================= */
+        const notes = {
+            hindi: {
+                "Ch 01: Chapter 01": "",
+                "Ch 02: Chapter 02": "",
+                "Ch 03: Chapter 03": "",
+                "Ch 04: Chapter 04": "",
+                "Ch 05: Chapter 05": "",
+                "Ch 06: Chapter 06": "",
+                "Ch 07: Chapter 07": "",
+                "Ch 08: Chapter 08": "",
+                "Ch 09: Chapter 09": "",
+                "Ch 10: Chapter 10": "",
+                "Ch 11: Chapter 11": "",
+                "Ch 12: Chapter 12": "",
+                "Ch 13: Chapter 13": "",
+                "Ch 14: Chapter 14": ""
+            },
+            english: {
+                "Ch 01: Chapter 01": "",
+                "Ch 02: Chapter 02": "",
+                "Ch 03: Chapter 03": "",
+                "Ch 04: Chapter 04": "",
+                "Ch 05: Chapter 05": "",
+                "Ch 06: Chapter 06": "",
+                "Ch 07: Chapter 07": "",
+                "Ch 08: Chapter 08": "",
+                "Ch 09: Chapter 09": "",
+                "Ch 10: Chapter 10": "",
+                "Ch 11: Chapter 11": "",
+                "Ch 12: Chapter 12": "",
+                "Ch 13: Chapter 13": "",
+                "Ch 14: Chapter 14": ""
+            },
+            chemistry: {
+                "Ch 01: Chapter 01": "",
+                "Ch 02: Chapter 02": "",
+                "Ch 03: Chapter 03": "",
+                "Ch 04: Chapter 04": "",
+                "Ch 05: Chapter 05": "",
+                "Ch 06: Chapter 06": "",
+                "Ch 07: Chapter 07": "",
+                "Ch 08: Chapter 08": "",
+                "Ch 09: Chapter 09": "",
+                "Ch 10: Chapter 10": "",
+                "Ch 11: Chapter 11": "",
+                "Ch 12: Chapter 12": "",
+                "Ch 13: Chapter 13": "",
+                "Ch 14: Chapter 14": ""
+            },
+            biology: {
+                "Ch 01: Chapter 01": "https://drive.google.com/file/d/1YlX3PF25ERJttA94_YjkBtO-IySw4E0h/view?usp=drivesdk",
+                "Ch 02: Chapter 02": "",
+                "Ch 03: Chapter 03": "",
+                "Ch 04: Chapter 04": "",
+                "Ch 05: Chapter 05": "",
+                "Ch 06: Chapter 06": "",
+                "Ch 07: Chapter 07": "",
+                "Ch 08: Chapter 08": "",
+                "Ch 09: Chapter 09": "",
+                "Ch 10: Chapter 10": "",
+                "Ch 11: Chapter 11": "",
+                "Ch 12: Chapter 12": "",
+                "Ch 13: Chapter 13": "",
+                "Ch 14: Chapter 14": ""
+            },
+            physics: {
+                "Ch 01: Chapter 01": "",
+                "Ch 02: Chapter 02": "",
+                "Ch 03: Chapter 03": "",
+                "Ch 04: Chapter 04": "",
+                "Ch 05: Chapter 05": "",
+                "Ch 06: Chapter 06": "",
+                "Ch 07: Chapter 07": "",
+                "Ch 08: Chapter 08": "",
+                "Ch 09: Chapter 09": "",
+                "Ch 10: Chapter 10": "",
+                "Ch 11: Chapter 11": "",
+                "Ch 12: Chapter 12": "",
+                "Ch 13: Chapter 13": "",
+                "Ch 14: Chapter 14": ""
+            },
+            physical education: {
+                "Ch 01: Chapter 01": "https://drive.google.com/file/d/1xp7fGMtyCviAi4KJ2KhkyglQT6dJ3rB2/view?usp=drivesdk",
+                "Ch 02: Chapter 02": "",
+                "Ch 03: Chapter 03": "",
+                "Ch 04: Chapter 04": "",
+                "Ch 05: Chapter 05": "",
+                "Ch 06: Chapter 06": "",
+                "Ch 07: Chapter 07": "",
+                "Ch 08: Chapter 08": "",
+                "Ch 09: Chapter 09": "https://drive.google.com/file/d/19Y6j8DBxZyO3Cx4yf_GJkbUWs3gnTNqk/view?usp=drivesdk",
+                "Ch 10: Chapter 10": "",
+                "Ch 11: Chapter 11": "",
+                "Ch 12: Chapter 12": "",
+                "Ch 13: Chapter 13": "",
+                "Ch 14: Chapter 14": ""
+           }
         };
 
-        // Scroll to Top Function
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+        let activeSubject = null;
+
+        // Auto Extract Google Drive File ID
+        function getDriveId(url) {
+            if (!url) return null;
+            const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+            return match ? match[1] : null;
+        }
+
+        // Switch to Subject View
+        function openSubject(key, title) {
+            activeSubject = key;
+            document.getElementById('subject-title').innerText = title;
+            document.getElementById('search').value = '';
+            document.getElementById('home-view').classList.remove('active');
+            document.getElementById('subject-view').classList.add('active');
+            renderChapters();
+        }
+
+        // Switch to Home View
+        function goHome() {
+            document.getElementById('subject-view').classList.remove('active');
+            document.getElementById('home-view').classList.add('active');
+        }
+
+        // Render Chapter Cards
+        function renderChapters() {
+            const container = document.getElementById('chapters-list');
+            container.innerHTML = '';
+            const searchVal = document.getElementById('search').value.toLowerCase();
+            const chapters = notes[activeSubject];
+
+            for (let name in chapters) {
+                if (searchVal && !name.toLowerCase().includes(searchVal)) continue;
+
+                const rawUrl = chapters[name];
+                const fileId = getDriveId(rawUrl);
+                const card = document.createElement('div');
+                card.className = 'glass card';
+                card.style.textAlign = 'left';
+
+                if (fileId) {
+                    const openUrl = `https://drive.google.com/file/d/${fileId}/view`;
+                    const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+                    const previewUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+
+                    card.innerHTML = `
+                        <div>
+                            <span class="status-badge available">Available</span>
+                            <h3>${name}</h3>
+                        </div>
+                        <div class="actions">
+                            <a href="${openUrl}" target="_blank" class="btn-act active">Open</a>
+                            <a href="${downloadUrl}" target="_blank" class="btn-act active">Download</a>
+                            <button onclick="openModal('${previewUrl}', '${name}')" class="btn-act active">Preview</button>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <div>
+                            <span class="status-badge empty">Coming Soon</span>
+                            <h3>${name}</h3>
+                        </div>
+                        <p style="font-size:0.8rem; color:#a0aec0; margin-top:8px;">📄 Notes Coming Soon</p>
+                        <div class="actions">
+                            <span class="btn-act disabled">Open</span>
+                            <span class="btn-act disabled">Download</span>
+                            <span class="btn-act disabled">Preview</span>
+                        </div>
+                    `;
+                }
+                container.appendChild(card);
+            }
+        }
+
+        function filterChapters() {
+            renderChapters();
+        }
+
+        // Preview Modal Logic
+        function openModal(url, title) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('pdf-frame').src = url;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.getElementById('pdf-frame').src = '';
         }
     </script>
 </body>
