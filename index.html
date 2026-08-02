@@ -1,200 +1,657 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Study Notes</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Study Notes</title>
+    <style>
+        /* =========================================
+           FONT & BASE STYLES
+           ========================================= */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI,Arial,sans-serif;
-}
+        :root {
+            --text-main: #ffffff;
+            --text-muted: #a0aec0;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-bg-hover: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #4fd1c5;
+            --accent-hover: #38b2ac;
+        }
 
-body{
-background:linear-gradient(135deg,#0f172a,#1e293b,#2563eb);
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-.container{
-width:100%;
-max-width:900px;
-}
+        body {
+            /* Dark Blue Premium Gradient */
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
 
-.card{
-background:rgba(255,255,255,.12);
-backdrop-filter:blur(20px);
-border:1px solid rgba(255,255,255,.2);
-border-radius:24px;
-padding:35px;
-color:white;
-box-shadow:0 15px 40px rgba(0,0,0,.35);
-}
+        /* =========================================
+           GLASSMORPHISM UTILITIES
+           ========================================= */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
 
-h1{
-font-size:38px;
-margin-bottom:10px;
-}
+        .glass-card {
+            border-radius: 16px;
+            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.subtitle{
-opacity:.85;
-margin-bottom:30px;
-font-size:17px;
-}
+        .glass-card:hover {
+            transform: translateY(-5px);
+            background: var(--glass-bg-hover);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+        }
 
-.info{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:15px;
-margin-bottom:30px;
-}
+        /* =========================================
+           LAYOUT & COMPONENTS
+           ========================================= */
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--glass-border);
+            border-radius: 0 0 20px 20px;
+        }
 
-.box{
-background:rgba(255,255,255,.1);
-padding:18px;
-border-radius:15px;
-}
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
 
-.box h3{
-font-size:15px;
-opacity:.8;
-margin-bottom:6px;
-}
+        header p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
 
-.box p{
-font-size:18px;
-font-weight:bold;
-}
+        main {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
 
-.buttons{
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-margin-bottom:30px;
-}
+        /* Views (SPA) */
+        #home-view, #subject-view {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
 
-.btn{
-flex:1;
-min-width:180px;
-padding:15px;
-border-radius:12px;
-text-align:center;
-text-decoration:none;
-font-size:18px;
-font-weight:bold;
-transition:.3s;
-}
+        .hidden {
+            display: none !important;
+            opacity: 0;
+            transform: translateY(20px);
+        }
 
-.open{
-background:#22c55e;
-color:white;
-}
+        .fade-in {
+            animation: fadeIn 0.5s forwards;
+        }
 
-.download{
-background:#2563eb;
-color:white;
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.btn:hover{
-transform:translateY(-4px);
-}
+        /* Grid for Home Subjects */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
 
-iframe{
-width:100%;
-height:600px;
-border:none;
-border-radius:18px;
-background:white;
-}
+        .subject-card {
+            cursor: pointer;
+            padding: 40px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
 
-.footer{
-margin-top:20px;
-text-align:center;
-opacity:.8;
-font-size:14px;
-}
+        .folder-icon {
+            font-size: 4rem;
+            display: inline-block;
+            animation: float 4s ease-in-out infinite;
+        }
 
-@media(max-width:700px){
+        /* Staggered animation delays for folder icons */
+        .subject-card:nth-child(even) .folder-icon {
+            animation-delay: 1s;
+        }
+        .subject-card:nth-child(3n) .folder-icon {
+            animation-delay: 2s;
+        }
 
-h1{
-font-size:30px;
-}
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
 
-iframe{
-height:420px;
-}
+        .subject-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
 
-}
-</style>
+        /* Subject View Specifics */
+        .subject-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
 
+        .btn-back {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: var(--glass-bg-hover);
+            transform: translateX(-5px);
+        }
+
+        #current-subject-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 20px 12px 40px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .search-container input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-container input:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: var(--accent);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+        }
+
+        /* Chapters Layout */
+        .chapters-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .chapter-card {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chapter-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 10px;
+        }
+
+        .chapter-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .btn-action {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-action:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(79, 209, 197, 0.4);
+        }
+
+        .btn-preview {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state h4 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        /* Floating Action Button (FAB) */
+        #fab {
+            position: fixed;
+            bottom: 80px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #000;
+            font-size: 1.5rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(79, 209, 197, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        #fab.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #fab:hover {
+            transform: scale(1.1);
+            background: var(--accent-hover);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            border-top: 1px solid var(--glass-border);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.5rem; }
+            .subject-header { flex-direction: column; align-items: flex-start; }
+            .search-container { max-width: 100%; }
+            .chapter-actions { flex-direction: column; }
+            #fab { bottom: 90px; right: 20px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+    <!-- Header -->
+    <header class="glass">
+        <h1>📚 Study Notes</h1>
+        <p>Organized study notes for quick access from anywhere.</p>
+    </header>
 
-<div class="card">
+    <!-- Main Content Area -->
+    <main>
+        
+        <!-- View 1: Home (Subject Grid) -->
+        <div id="home-view" class="fade-in">
+            <div class="subjects-grid">
+                <!-- Subject Cards -->
+                <div class="glass glass-card subject-card" onclick="openSubject('hindi', 'Hindi')">
+                    <span class="folder-icon">📁</span>
+                    <h2>Hindi</h2>
+                </div>
+                <div class="glass glass-card subject-card" onclick="openSubject('english', 'English')">
+                    <span class="folder-icon">📁</span>
+                    <h2>English</h2>
+                </div>
+                <div class="glass glass-card subject-card" onclick="openSubject('chemistry', 'Chemistry')">
+                    <span class="folder-icon">📁</span>
+                    <h2>Chemistry</h2>
+                </div>
+                <div class="glass glass-card subject-card" onclick="openSubject('biology', 'Biology')">
+                    <span class="folder-icon">📁</span>
+                    <h2>Biology</h2>
+                </div>
+                <div class="glass glass-card subject-card" onclick="openSubject('pe', 'Physical Education')">
+                    <span class="folder-icon">📁</span>
+                    <h2>Physical Education</h2>
+                </div>
+                <div class="glass glass-card subject-card" onclick="openSubject('physics', 'Physics')">
+                    <span class="folder-icon">📁</span>
+                    <h2>Physics</h2>
+                </div>
+            </div>
+        </div>
 
-<h1>📚 Study Notes</h1>
+        <!-- View 2: Subject Details & Chapters -->
+        <div id="subject-view" class="hidden fade-in">
+            
+            <!-- Subject Header (Back Btn + Title + Search) -->
+            <div class="subject-header">
+                <button class="btn-back" onclick="goHome()">
+                    <span>⬅️</span> Back to Home
+                </button>
+                <h2 id="current-subject-title">Subject Name</h2>
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search chapters..." onkeyup="filterChapters()">
+                </div>
+            </div>
 
-<p class="subtitle">
-Quick access to your notes from anywhere.
-</p>
+            <!-- Subject Folders (Only one is visible at a time) -->
+            <!-- 
+                 INSTRUCTIONS FOR ADDING CHAPTERS:
+                 1. Find the subject div below (e.g., id="subject-physics").
+                 2. Copy the "ADD CHAPTER TEMPLATE" block found inside the comments.
+                 3. Paste it just below the empty-state div.
+                 4. Replace "Chapter Name Here" with the actual name.
+                 5. Replace "FILE_ID" with your actual Google Drive File ID.
+            -->
 
-<div class="info">
+            <!-- 1. HINDI FOLDER -->
+            <div id="subject-hindi" class="chapters-list subject-folder hidden">
+                <div class="glass glass-card empty-state">
+                    <h4>📭 No chapters yet</h4>
+                    <p>Check the HTML source code to add chapters using the template.</p>
+                </div>
+                <!-- ========================================== -->
+                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
+                <!-- ========================================== -->
+                <!--
+                <div class="glass glass-card chapter-card">
+                    <h3 class="chapter-name">Chapter Name Here</h3>
+                    <div class="chapter-actions">
+                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
+                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
+                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
+                    </div>
+                </div>
+                -->
+                <!-- ========================================== -->
+            </div>
 
-<div class="box">
-<h3>Subject</h3>
-<p>Notes</p>
-</div>
+            <!-- 2. ENGLISH FOLDER -->
+            <div id="subject-english" class="chapters-list subject-folder hidden">
+                <div class="glass glass-card empty-state">
+                    <h4>📭 No chapters yet</h4>
+                    <p>Check the HTML source code to add chapters using the template.</p>
+                </div>
+                <!-- ========================================== -->
+                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
+                <!-- ========================================== -->
+                <!--
+                <div class="glass glass-card chapter-card">
+                    <h3 class="chapter-name">Chapter Name Here</h3>
+                    <div class="chapter-actions">
+                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
+                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
+                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
+                    </div>
+                </div>
+                -->
+                <!-- ========================================== -->
+            </div>
 
-<div class="box">
-<h3>Format</h3>
-<p>PDF</p>
-</div>
+            <!-- 3. CHEMISTRY FOLDER -->
+            <div id="subject-chemistry" class="chapters-list subject-folder hidden">
+                <div class="glass glass-card empty-state">
+                    <h4>📭 No chapters yet</h4>
+                    <p>Check the HTML source code to add chapters using the template.</p>
+                </div>
+                <!-- ========================================== -->
+                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
+                <!-- ========================================== -->
+                <!--
+                <div class="glass glass-card chapter-card">
+                    <h3 class="chapter-name">Chapter Name Here</h3>
+                    <div class="chapter-actions">
+                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
+                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
+                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
+                    </div>
+                </div>
+                -->
+                <!-- ========================================== -->
+            </div>
 
-<div class="box">
-<h3>Access</h3>
-<p>Online</p>
-</div>
+            <!-- 4. BIOLOGY FOLDER -->
+            <div id="subject-biology" class="chapters-list subject-folder hidden">
+                <div class="glass glass-card empty-state">
+                    <h4>📭 No chapters yet</h4>
+                    <p>Check the HTML source code to add chapters using the template.</p>
+                </div>
+                <!-- ========================================== -->
+                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
+                <!-- ========================================== -->
+                <!--
+                <div class="glass glass-card chapter-card">
+                    <h3 class="chapter-name">Chapter Name Here</h3>
+                    <div class="chapter-actions">
+                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
+                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
+                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
+                    </div>
+                </div>
+                -->
+                <!-- ========================================== -->
+            </div>
 
-</div>
+            <!-- 5. PHYSICAL EDUCATION FOLDER -->
+            <div id="subject-pe" class="chapters-list subject-folder hidden">
+                <div class="glass glass-card empty-state">
+                    <h4>📭 No chapters yet</h4>
+                    <p>Check the HTML source code to add chapters using the template.</p>
+                </div>
+                <!-- ========================================== -->
+                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
+                <!-- ========================================== -->
+                <!--
+                <div class="glass glass-card chapter-card">
+                    <h3 class="chapter-name">Chapter Name Here</h3>
+                    <div class="chapter-actions">
+                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
+                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
+                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
+                    </div>
+                </div>
+                -->
+                <!-- ========================================== -->
+            </div>
 
-<div class="buttons">
+            <!-- 6. PHYSICS FOLDER -->
+            <div id="subject-physics" class="chapters-list subject-folder hidden">
+                <div class="glass glass-card empty-state">
+                    <h4>📭 No chapters yet</h4>
+                    <p>Check the HTML source code to add chapters using the template.</p>
+                </div>
+                <!-- ========================================== -->
+                <!-- ADD CHAPTER TEMPLATE (COPY THIS BLOCK)       -->
+                <!-- ========================================== -->
+                <!--
+                <div class="glass glass-card chapter-card">
+                    <h3 class="chapter-name">Chapter Name Here</h3>
+                    <div class="chapter-actions">
+                        <a href="https://drive.google.com/file/d/FILE_ID/view?usp=drivesdk" target="_blank" class="btn-action">Open</a>
+                        <a href="https://drive.google.com/uc?export=download&id=FILE_ID" target="_blank" class="btn-action">Download</a>
+                        <a href="https://drive.google.com/file/d/FILE_ID/preview" target="_blank" class="btn-action btn-preview">Preview</a>
+                    </div>
+                </div>
+                -->
+                <!-- ========================================== -->
+            </div>
 
-<a class="btn open"
-href="https://drive.google.com/file/d/19Y6j8DBxZyO3Cx4yf_GJkbUWs3gnTNqk/view?usp=drivesdk"
-target="_blank"
-rel="noopener noreferrer">
-📖 Open PDF
-</a>
+        </div>
+    </main>
 
-<a class="btn download"
-href="https://drive.google.com/uc?export=download&id=19Y6j8DBxZyO3Cx4yf_GJkbUWs3gnTNqk">
-⬇ Download PDF
-</a>
+    <!-- Floating Action Button (Scroll to top) -->
+    <button id="fab" onclick="scrollToTop()" title="Go to top">⬆️</button>
 
-</div>
+    <!-- Footer -->
+    <footer class="glass">
+        Made with ❤️ by Ayush | Hosted on GitHub Pages
+    </footer>
 
-<iframe
-src="https://drive.google.com/file/d/19Y6j8DBxZyO3Cx4yf_GJkbUWs3gnTNqk/preview"
-allow="autoplay"
-loading="lazy">
-</iframe>
+    <!-- JavaScript for SPA Logic & Functionality -->
+    <script>
+        // Global variable to keep track of current active subject
+        let activeSubjectId = null;
 
-<div class="footer">
-Made with ❤️ | Hosted on GitHub Pages
-</div>
+        // Function to open a specific subject page
+        function openSubject(subjectId, subjectName) {
+            // Update Title
+            document.getElementById('current-subject-title').innerText = subjectName;
+            
+            // Clear search bar
+            document.getElementById('searchInput').value = '';
 
-</div>
+            // Hide Home View
+            document.getElementById('home-view').classList.add('hidden');
+            
+            // Hide all subject folders
+            const allFolders = document.querySelectorAll('.subject-folder');
+            allFolders.forEach(folder => {
+                folder.classList.add('hidden');
+                // Reset all chapter card visibilities in case they were filtered
+                const chapters = folder.querySelectorAll('.chapter-card');
+                chapters.forEach(card => card.style.display = 'flex');
+            });
 
-</div>
+            // Show selected subject folder
+            const activeFolder = document.getElementById('subject-' + subjectId);
+            activeFolder.classList.remove('hidden');
+            activeSubjectId = subjectId;
 
+            // Show Subject View container
+            const subjectView = document.getElementById('subject-view');
+            subjectView.classList.remove('hidden');
+            
+            // Scroll to top automatically on page transition
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Function to go back to the home page
+        function goHome() {
+            // Hide Subject View
+            document.getElementById('subject-view').classList.add('hidden');
+            
+            // Show Home View
+            document.getElementById('home-view').classList.remove('hidden');
+            
+            activeSubjectId = null;
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Function to filter chapters by search input
+        function filterChapters() {
+            if (!activeSubjectId) return;
+
+            let input = document.getElementById('searchInput');
+            let filter = input.value.toLowerCase();
+            let activeFolder = document.getElementById('subject-' + activeSubjectId);
+            let chapters = activeFolder.querySelectorAll('.chapter-card');
+            
+            // Filter logic
+            chapters.forEach(chapter => {
+                let chapterName = chapter.querySelector('.chapter-name').innerText.toLowerCase();
+                if (chapterName.includes(filter)) {
+                    chapter.style.display = "flex";
+                } else {
+                    chapter.style.display = "none";
+                }
+            });
+        }
+
+        // Floating Action Button Visibility Logic
+        window.onscroll = function() {
+            const fab = document.getElementById("fab");
+            // Show button after scrolling down 200px
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                fab.classList.add("show");
+            } else {
+                fab.classList.remove("show");
+            }
+        };
+
+        // Scroll to Top Function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 </html>
